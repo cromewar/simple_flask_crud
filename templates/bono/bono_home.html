@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block title %}bono_home{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-5">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <p> {{message}} </p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="card card-body">
+                <form action="/bono/add_bono" method="post">
+                    <div class="form-group">
+                        <input type="text" name="valor" placeholder="valor" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <p>Fecha: </p>
+                        <input type="date" name="fecha" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <select name="user" class="form-control">
+                            {% for usr in user%}
+                            <option value="{{ usr.0}}">
+                                {{ usr.1 }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>                
+        </div>
+
+        <div class="col-md-7">
+            <table class="table table-striped bg-white table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <td>valor</td>
+                        <td>fecha</td>
+                        <td>usuario</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bn in bono %}
+                    <tr>
+                        <td>{{bn.1}}</td>
+                        <td>{{bn.2}}</td>
+                        <td>{{bn.4}}</td>
+                        <td>
+                            <a href="/bono/edit_bono/{{bn.0}}" class="btn btn-secondary">Editar</a>
+                            <a href="/bono/delete_bono/{{bn.0}}" class="btn btn-danger btn-delete">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
